@@ -1,7 +1,52 @@
-description = 'Simple Map'
+plugins {
+    id 'com.android.application'
+}
 
-apply plugin: 'com.android.application'
-apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
+apply from: rootProject.file("dependencies.gradle")
+
+android {
+    compileSdkVersion versions.compile_sdk
+    buildToolsVersion versions.build_tools_version
+
+    defaultConfig {
+        applicationId "org.osmdroid.sample"
+        minSdkVersion versions.min_sdk_openstreetmapviewer
+        targetSdkVersion versions.target_sdk
+        versionCode versions.version_code
+        versionName versions.version_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+
+dependencies {
+    implementation project(':osmdroid-android')
+    implementation deps.androidx.appcompat
+
+
+
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+//    testImplementation 'junit:junit:4.+'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+
+// apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
 
 // Attention! HACK!
 // In https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle
@@ -13,28 +58,28 @@ apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gr
 //
 // The following is just a copy of the relevant code from android-support.gradle adapted to the new
 // name. This should be cleaned up in the future!
-afterEvaluate { project ->
-    tasks.each { task ->
-        if (isAndroidApplication) {
-            if ((task.name.toLowerCase().startsWith("assemble") && task.name.toLowerCase().contains('release'))
-                    || (task.name.toLowerCase().startsWith("bundle") && task.name.toLowerCase().contains('release'))
-                    || (task.name.toLowerCase().startsWith("package") && task.name.toLowerCase().contains('release'))
-                    || (task.name.equals("validateSigningRelease"))) {
+//afterEvaluate { project ->
+//    tasks.each { task ->
+//        if (isAndroidApplication) {
+//            if ((task.name.toLowerCase().startsWith("assemble") && task.name.toLowerCase().contains('release'))
+//                    || (task.name.toLowerCase().startsWith("bundle") && task.name.toLowerCase().contains('release'))
+//                    || (task.name.toLowerCase().startsWith("package") && task.name.toLowerCase().contains('release'))
+//                    || (task.name.equals("validateSigningRelease"))) {
+//
+//                task.setEnabled(canSign)
+//            }
+//        }
+//    }
+//}
 
-                task.setEnabled(canSign)
-            }
-        }
-    }
-}
-
-android {
-    defaultConfig {
-        applicationId 'org.osmdroid.sample'
-        minSdkVersion Integer.parseInt(project.property('android-minSdkForSupportLib.version'))
-    }
-}
-
-dependencies {
-    compile "com.android.support:appcompat-v7:${project.property('android-support.version')}"
-    compile project(':osmdroid-android')
-}
+//android {
+//    defaultConfig {
+//        applicationId 'org.osmdroid.sample'
+//        minSdkVersion Integer.parseInt(project.property('android-minSdkForSupportLib.version'))
+//    }
+//}
+//
+//dependencies {
+//    compile "com.android.support:appcompat-v7:${project.property('android-support.version')}"
+//    compile project(':osmdroid-android')
+//}

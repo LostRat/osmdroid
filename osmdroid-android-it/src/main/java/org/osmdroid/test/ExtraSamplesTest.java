@@ -9,8 +9,8 @@
 
 package org.osmdroid.test;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.core.app.Fragment;
+import androidx.core.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 

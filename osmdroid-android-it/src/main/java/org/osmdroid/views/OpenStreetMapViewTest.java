@@ -8,7 +8,7 @@
 package org.osmdroid.views;
 
 import android.graphics.Point;
-import android.support.v4.app.FragmentManager;
+import androidx.core.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 
