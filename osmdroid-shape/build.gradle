@@ -1,17 +1,57 @@
+plugins {
+    id 'com.android.library'
+}
 description = 'Shapefile support for osmdroid'
 
-apply plugin: 'com.android.library'
-apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
+apply from: rootProject.file("dependencies.gradle")
 
 android {
+    compileSdkVersion versions.compile_sdk
+    buildToolsVersion versions.build_tools_version
 
+
+    defaultConfig {
+        minSdkVersion versions.min_sdk_osmdroid_android
+        targetSdkVersion versions.target_sdk
+        //
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        consumerProguardFiles "consumer-rules.pro"
+    }
+
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
 }
-
 dependencies {
-   
-    testCompile 'junit:junit:4.13'
-    compile project(':osmdroid-android')
-    compile 'com.github.spyhunter99:jdbf:2.2.0'
+    androidTestImplementation deps.test.junit
+    implementation project(':osmdroid-android')
+    implementation 'com.github.spyhunter99:jdbf:2.2.0'
 
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    implementation 'com.google.android.material:material:1.2.1'
+//    testImplementation 'junit:junit:4.+'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
+
+// apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
+
+//android {
+//
+//}
+//
+//dependencies {
+//
+//    testCompile 'junit:junit:4.13'
+//    compile project(':osmdroid-android')
+//    compile 'com.github.spyhunter99:jdbf:2.2.0'
+//
+//}
 

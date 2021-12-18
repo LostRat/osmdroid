@@ -1,25 +1,66 @@
+plugins {
+    id 'com.android.library'
+}
 description = 'An Android library to display OpenStreetMap views.'
-apply plugin: 'com.android.library'
-apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
+
+
+apply from: rootProject.file("dependencies.gradle")
 
 android {
-    lintOptions {
-        abortOnError false
+    compileSdkVersion versions.compile_sdk
+    buildToolsVersion versions.build_tools_version
+
+
+    defaultConfig {
+        minSdkVersion versions.min_sdk_osmdroid_android
+        targetSdkVersion versions.target_sdk
+        //
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        consumerProguardFiles "consumer-rules.pro"
     }
+
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
 }
 
 dependencies {
-    testCompile "junit:junit:${project.property('junit.version')}"
-    testCompile "org.robolectric:robolectric:${project.property('robolectric.version')}"
-}
-import org.apache.tools.ant.filters.*
-task copyFiles(type: Copy) {
-    from 'src/main/filtered/org/osmdroid'
-    into 'src/main/java/org/osmdroid'
-    filter(ReplaceTokens, tokens: [
-            "pom.version": project.property("pom.version"),
-            "date": new Date().toString()
-    ])
+    androidTestImplementation deps.test.junit
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    implementation 'com.google.android.material:material:1.2.1'
+//    testImplementation 'junit:junit:4.+'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-preBuild.dependsOn(copyFiles)
+
+// apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
+
+//android {
+//    lintOptions {
+//        abortOnError false
+//    }
+//}
+//
+//dependencies {
+//    testCompile "junit:junit:${project.property('junit.version')}"
+//    testCompile "org.robolectric:robolectric:${project.property('robolectric.version')}"
+//}
+//import org.apache.tools.ant.filters.*
+//task copyFiles(type: Copy) {
+//    from 'src/main/filtered/org/osmdroid'
+//    into 'src/main/java/org/osmdroid'
+//    filter(ReplaceTokens, tokens: [
+//            "pom.version": project.property("pom.version"),
+//            "date": new Date().toString()
+//    ])
+//}
+//
+//preBuild.dependsOn(copyFiles)

@@ -1,27 +1,45 @@
+plugins {
+    id 'java-library'
+}
+
+apply from: rootProject.file("dependencies.gradle")
+
 description = "A tool to package OpenStreetMap tiles"
+
 apply plugin: 'java'
-apply plugin: 'distribution'
 apply plugin: 'application'
-apply plugin: 'maven'
 
-mainClassName = "org.osmdroid.mtp.OSMMapTilePackager"
-
-test {
-    testLogging {
-        showStandardStreams = true
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
 }
 
+
+
+//
+//description = "A tool to package OpenStreetMap tiles"
+//apply plugin: 'java'
+//apply plugin: 'distribution'
+//apply plugin: 'application'
+//apply plugin: 'maven'
+//
+//mainClassName = "org.osmdroid.mtp.OSMMapTilePackager"
+//
+//test {
+//    testLogging {
+//        showStandardStreams = true
+//    }
+//}
+//
 dependencies {
-    compile 'org.apache.httpcomponents:httpmime:4.0.1'
-    compile 'org.apache.james:apache-mime4j:0.6'
-    compile 'org.xerial:sqlite-jdbc:3.7.2'
+    implementation 'org.apache.httpcomponents:httpmime:4.0.1'
+    implementation 'org.apache.james:apache-mime4j:0.6'
+    implementation 'org.xerial:sqlite-jdbc:3.7.2'
 
-
-    testCompile "junit:junit:${project.property('junit.version')}"
+    testImplementation deps.test.junit
 }
-
-//copy the instrumentation tests from the maven osmdroid-android-it src folder
+//
+////copy the instrumentation tests from the maven osmdroid-android-it src folder
 task preBuildTask1(type: Copy) {
     println("copying StreamUtils sources")
     description 'copy java classes from osmdroid-android.'

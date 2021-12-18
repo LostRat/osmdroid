@@ -1,6 +1,58 @@
+plugins {
+    id 'com.android.library'
+}
+
 description = "An Android library to display OpenStreetMap views using Mapsforge. May use non ASF licensed dependencies"
-apply plugin: 'com.android.library'
-apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
+
+
+apply from: rootProject.file("dependencies.gradle")
+
+android {
+    compileSdkVersion versions.compile_sdk
+    buildToolsVersion versions.build_tools_version
+
+
+    defaultConfig {
+        // mapsforge 0.8.0 has minSdk 10
+        minSdkVersion versions.min_sdk_osmdroid_android
+        targetSdkVersion versions.target_sdk
+        //
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        consumerProguardFiles "consumer-rules.pro"
+    }
+
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+}
+
+dependencies {
+    androidTestImplementation deps.test.junit
+
+    //Mapsforge rendering and database support, which is LGPL
+    implementation 'org.mapsforge:mapsforge-map-android:0.11.0'
+    implementation 'org.mapsforge:mapsforge-map:0.11.0'
+    implementation 'org.mapsforge:mapsforge-themes:0.11.0'
+
+    //osmdroid which is ASF licensed
+    implementation project(':osmdroid-android')
+
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    implementation 'com.google.android.material:material:1.2.1'
+//    testImplementation 'junit:junit:4.+'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+
+// apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle"
 
 // Attention! HACK!
 // In https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gradle/android-support.gradle
@@ -12,35 +64,35 @@ apply from: "https://raw.githubusercontent.com/gradle-fury/gradle-fury/v1.1.4/gr
 //
 // The following is just a copy of the relevant code from android-support.gradle adapted to the new
 // name. This should be cleaned up in the future!
-afterEvaluate { project ->
-    tasks.each { task ->
-        if (isAndroidApplication) {
-            if ((task.name.toLowerCase().startsWith("assemble") && task.name.toLowerCase().contains('release'))
-                    || (task.name.toLowerCase().startsWith("bundle") && task.name.toLowerCase().contains('release'))
-                    || (task.name.toLowerCase().startsWith("package") && task.name.toLowerCase().contains('release'))
-                    || (task.name.equals("validateSigningRelease"))) {
+//afterEvaluate { project ->
+//    tasks.each { task ->
+//        if (isAndroidApplication) {
+//            if ((task.name.toLowerCase().startsWith("assemble") && task.name.toLowerCase().contains('release'))
+//                    || (task.name.toLowerCase().startsWith("bundle") && task.name.toLowerCase().contains('release'))
+//                    || (task.name.toLowerCase().startsWith("package") && task.name.toLowerCase().contains('release'))
+//                    || (task.name.equals("validateSigningRelease"))) {
+//
+//                task.setEnabled(canSign)
+//            }
+//        }
+//    }
+//}
 
-                task.setEnabled(canSign)
-            }
-        }
-    }
-}
+//android {
+//    defaultConfig {
+//        // mapsforge 0.8.0 has minSdk 10
+//        minSdkVersion 10
+//    }
+//}
 
-android {
-    defaultConfig {
-        // mapsforge 0.8.0 has minSdk 10
-        minSdkVersion 10
-    }
-}
-
-dependencies {
-    testCompile "junit:junit:${project.property('junit.version')}"
-
-    //Mapsforge rendering and database support, which is LGPL
-    compile 'org.mapsforge:mapsforge-map-android:0.11.0'
-    compile 'org.mapsforge:mapsforge-map:0.11.0'
-    compile 'org.mapsforge:mapsforge-themes:0.11.0'
-
-    //osmdroid which is ASF licensed
-    compile project(':osmdroid-android')
-}
+//dependencies {
+//    testCompile "junit:junit:${project.property('junit.version')}"
+//
+//    //Mapsforge rendering and database support, which is LGPL
+//    compile 'org.mapsforge:mapsforge-map-android:0.11.0'
+//    compile 'org.mapsforge:mapsforge-map:0.11.0'
+//    compile 'org.mapsforge:mapsforge-themes:0.11.0'
+//
+//    //osmdroid which is ASF licensed
+//    compile project(':osmdroid-android')
+//}
