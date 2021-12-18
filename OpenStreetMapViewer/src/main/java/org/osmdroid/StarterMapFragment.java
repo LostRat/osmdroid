@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.core.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.InputDevice;
 import android.view.LayoutInflater;

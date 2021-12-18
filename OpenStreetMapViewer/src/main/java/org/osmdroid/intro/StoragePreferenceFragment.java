@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.core.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;

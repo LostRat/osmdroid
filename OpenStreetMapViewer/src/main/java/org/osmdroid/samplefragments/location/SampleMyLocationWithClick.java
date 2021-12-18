@@ -1,6 +1,6 @@
 package org.osmdroid.samplefragments.location;
 
-import androidx.core.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;

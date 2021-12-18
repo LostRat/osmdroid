@@ -34,7 +34,6 @@
         android:required="false" />
 
     <application
-        android:exported="true"
         tools:replace="android:allowBackup"
         android:allowBackup="true"
         android:name=".OsmApplication"

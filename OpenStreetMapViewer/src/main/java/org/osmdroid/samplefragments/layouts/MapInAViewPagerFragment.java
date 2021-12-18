@@ -2,8 +2,8 @@ package org.osmdroid.samplefragments.layouts;
 
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.core.view.PagerAdapter;
-import androidx.core.view.ViewPager;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

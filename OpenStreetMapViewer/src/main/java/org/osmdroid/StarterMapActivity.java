@@ -7,10 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import androidx.core.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 /**
  * Default map view activity.
@@ -19,7 +20,7 @@ import android.view.KeyEvent;
  */
 public class StarterMapActivity extends AppCompatActivity {
     private static final String MAP_FRAGMENT_TAG = "org.osmdroid.MAP_FRAGMENT_TAG";
-
+    private StarterMapFragment starterMapFragment;
     /**
      * The idea behind that is to force a MapView refresh when switching from offline to online.
      * If you don't do that, the map may display - when online - approximated tiles
@@ -39,8 +40,6 @@ public class StarterMapActivity extends AppCompatActivity {
             }
         }
     };
-
-    private StarterMapFragment starterMapFragment;
 
     /**
      * Called when the activity is first created.
