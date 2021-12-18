@@ -1,7 +1,7 @@
 package org.osmdroid.samplefragments.layers;
 
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import androidx.core.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,8 +1,8 @@
 package org.osmdroid.samplefragments.layouts.pager;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.core.app.Fragment;
+import androidx.core.app.FragmentManager;
+import androidx.core.app.FragmentStatePagerAdapter;
 
 /**
  * Created by alex on 10/22/16.
