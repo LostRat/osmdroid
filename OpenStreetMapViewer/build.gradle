@@ -55,13 +55,14 @@ dependencies {
     implementation deps.androidx.multidex
     implementation deps.androidx.annotation
     implementation deps.androidx.fragment
+    implementation deps.androidx.preference
 
     implementation 'ch.acra:acra:4.7.0'
     implementation 'com.opencsv:opencsv:4.6'
 
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.android.rules
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     // androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // this was missing in this module -- Ron

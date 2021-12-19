@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation project(':osmdroid-android')
     implementation deps.androidx.appcompat
+    implementation deps.androidx.preference
 
 
 
