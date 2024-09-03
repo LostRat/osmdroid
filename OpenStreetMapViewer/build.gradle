@@ -102,7 +102,7 @@ dependencies {
 
     //on device testing
 //    androidTestImplementation 'androidx.multidex:multidex:2.0.1'
-//    androidTestImplementation "androidx.annotation:annotation:1.8.2"
+    androidTestImplementation "androidx.annotation:annotation:1.6.0"
 
 
     androidTestImplementation "androidx.test:runner:1.6.2"
@@ -118,10 +118,10 @@ dependencies {
 
 //the following sets the required permissions for API 23+ devices and AVDs
 
-android.applicationVariants.all { variant ->
+android.applicationVariants.configureEach { variant ->
     if (variant.getBuildType().name == "debug") {
-        task "configDevice${variant.name.capitalize()}"(type: Exec) {
-            dependsOn variant.install
+        tasks.register('"configDevice${variant.name.capitalize()}"', Exec) {
+            dependsOn variant.installProvider
 
             group = 'nameofyourtaskgroup'
             description = 'Describe your task here.'
@@ -130,15 +130,15 @@ android.applicationVariants.all { variant ->
             def mypermission = 'android.permission.ACCESS_FINE_LOCATION'
             commandLine "$adb shell pm grant ${variant.applicationId} $mypermission".split(' ')
         }
-        variant.testVariant.connectedInstrumentTest.dependsOn "configDevice${variant.name.capitalize()}"
+//        variant.testVariant.connectedInstrumentTest.dependsOn "configDevice${variant.name.capitalize()}"
     }
 }
 
 
-android.applicationVariants.all { variant ->
+android.applicationVariants.configureEach { variant ->
     if (variant.getBuildType().name == "debug") {
-        task "configDevice2${variant.name.capitalize()}"(type: Exec) {
-            dependsOn variant.install
+        tasks.register('"configDevice2${variant.name.capitalize()}"', Exec) {
+            dependsOn variant.installProvider
 
             group = 'nameofyourtaskgroup'
             description = 'Describe your task here.'
@@ -147,6 +147,6 @@ android.applicationVariants.all { variant ->
             def mypermission = 'android.permission.WRITE_EXTERNAL_STORAGE '
             commandLine "$adb shell pm grant ${variant.applicationId} $mypermission".split(' ')
         }
-        variant.testVariant.connectedInstrumentTest.dependsOn "configDevice2${variant.name.capitalize()}"
+//        variant.testVariant.connectedInstrumentTest.dependsOn "configDevice2${variant.name.capitalize()}"
     }
 }
