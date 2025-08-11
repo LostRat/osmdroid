@@ -7,6 +7,7 @@ group = project.property("pom.groupId")
 version =  project.property("pom.version")
 
 android {
+    namespace "org.osmdroid.simplemap"
     compileSdkVersion findProperty('android.compileSdkVersion').toInteger()
      defaultConfig {
 
@@ -20,7 +21,7 @@ android {
                  ? Integer.parseInt(project.property('android.compileSdkVersion')) : 34)
 
 
-         minSdkVersion(14)
+         minSdkVersion(23)
 
 
          targetSdkVersion(project.hasProperty('android.targetSdkVersion')

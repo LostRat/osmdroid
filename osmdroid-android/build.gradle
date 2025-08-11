@@ -8,6 +8,7 @@ version =  project.property("pom.version")
 
 
 android {
+    namespace 'org.osmdroid.library' // Add this line
     compileSdkVersion findProperty('android.compileSdkVersion').toInteger()
 
     defaultConfig{
@@ -57,7 +58,44 @@ task copyFiles(type: Copy) {
 }
 
 
+gradle.projectsEvaluated {
+    def copyTask = rootProject.findProject(":osmdroid-android")?.tasks?.findByName("copyFiles")
+    if (copyTask != null) {
+        allprojects.each { proj ->
+            proj.tasks.configureEach { t ->
+                def name = t.name.toLowerCase()
+                if (name.contains("java") || name.contains("annotations") || name.contains("sources") || name.contains("prebuild")) {
+                    t.dependsOn(copyTask)
+                }
+            }
+        }
+    }
+}
+
 afterEvaluate {
+    tasks.withType(JavaCompile).configureEach { compileTask ->
+        compileTask.dependsOn(copyFiles)
+    }
+    tasks.configureEach { t ->
+        if (t.name.toLowerCase().contains("java") || t.name.toLowerCase().contains("annotations")) {
+            t.dependsOn(copyFiles)
+        }
+    }
+    tasks.configureEach { t ->
+        def name = t.name.toLowerCase()
+        if (name.contains("java") || name.contains("annotations") || name.contains("sources")) {
+            t.dependsOn(copyFiles)
+        }
+    }
+    def copyTask = rootProject.findProject(":osmdroid-android")?.tasks?.findByName("copyFiles")
+    if (copyTask != null) {
+        tasks.configureEach { t ->
+            def n = t.name.toLowerCase()
+            if (n.contains("java") || n.contains("annotations") || n.contains("sources") || n.contains("prebuild")) {
+                t.dependsOn(copyTask)
+            }
+        }
+    }
     publishing {
 
         publications {

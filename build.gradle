@@ -2,6 +2,7 @@
 
 buildscript {
     repositories {
+        google()
         mavenCentral()
         mavenLocal()
         maven {
@@ -49,6 +50,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url "https://repo.maven.apache.org/maven2" }
 
+
     }
 
     tasks.withType(JavaCompile) {
@@ -56,5 +58,20 @@ allprojects {
     }
 
 
+}
+
+// root build.gradle
+gradle.afterProject { project ->
+    project.afterEvaluate {
+        tasks.matching { task ->
+            task.name.startsWith("publish") &&
+                    task.name.endsWith("PublicationToMavenLocal") &&
+                    task.name.contains("PdZipPublication")
+        }.configureEach { publishTask ->
+            if (tasks.findByName("distZip")) {
+                publishTask.dependsOn tasks.named("distZip")
+            }
+        }
+    }
 }
 

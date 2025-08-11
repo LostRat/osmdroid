@@ -8,6 +8,7 @@ group = project.property("pom.groupId")
 version = project.property("pom.version")
 
 android {
+    namespace 'org.osmdroid' // Add this line
     compileSdkVersion findProperty('android.compileSdkVersion').toInteger()
 
 
@@ -17,11 +18,11 @@ android {
 
         applicationId "org.osmdroid"
 
-        minSdkVersion 21
+        minSdkVersion 23
         multiDexEnabled = true
 
         compileSdkVersion(project.hasProperty('android.compileSdkVersion')
-                ? Integer.parseInt(project.property('android.compileSdkVersion')) : 34)
+                ? Integer.parseInt(project.property('android.compileSdkVersion')) : 35)
 
         // default targetSdkVersion to API 23, if not provided
         targetSdkVersion(project.hasProperty('android.targetSdkVersion')

@@ -6,11 +6,12 @@ group = project.property("pom.groupId")
 version =  project.property("pom.version")
 
 android {
+    namespace 'org.osmdroid.mapsforge' // Add this line
     compileSdkVersion findProperty('android.compileSdkVersion').toInteger()
 
     defaultConfig {
         // mapsforge 0.8.0 has minSdk 10
-        minSdkVersion 10
+        minSdkVersion 23
     }
     buildTypes {
         release {

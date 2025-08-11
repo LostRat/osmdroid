@@ -172,7 +172,7 @@ public class GEMFFile {
                                 0, yFile.getName().indexOf('.'))), yFile);
                     }
 
-                    xList.put(new Integer(xDir.getName()), yList);
+                    xList.put( Integer.valueOf(xDir.getName()), yList);
                 }
 
                 zList.put(Integer.parseInt(zDir.getName()), xList);
@@ -186,8 +186,8 @@ public class GEMFFile {
         final LinkedHashMap<Integer, String> indexSource = new LinkedHashMap<Integer, String>();
         int si = 0;
         for (final String source : dirIndex.keySet()) {
-            sourceIndex.put(source, new Integer(si));
-            indexSource.put(new Integer(si), source);
+            sourceIndex.put(source, si);
+            indexSource.put(si, source);
             ++si;
         }
 
@@ -204,11 +204,9 @@ public class GEMFFile {
                 for (final Integer x : new TreeSet<Integer>(dirIndex.get(source).get(zoom).keySet())) {
 
                     final List<Integer> ySet = new ArrayList<Integer>();
-                    for (final Integer y : dirIndex.get(source).get(zoom).get(x).keySet()) {
-                        ySet.add(y);
-                    }
+                    ySet.addAll(dirIndex.get(source).get(zoom).get(x).keySet());
 
-                    if (ySet.size() == 0) {
+                    if (ySet.isEmpty()) {
                         continue;
                     }
 
@@ -231,17 +229,17 @@ public class GEMFFile {
 
                     List<Integer> xSet = new ArrayList<Integer>();
                     for (int i = xList.first(); i < xList.last() + 1; ++i) {
-                        if (xList.contains(new Integer(i))) {
-                            xSet.add(new Integer(i));
+                        if (xList.contains(i)) {
+                            xSet.add(i);
                         } else {
-                            if (xSet.size() > 0) {
+                            if (!xSet.isEmpty()) {
                                 xSets.put(ySet, xSet);
                                 xSet = new ArrayList<Integer>();
                             }
                         }
                     }
 
-                    if (xSet.size() > 0) {
+                    if (!xSet.isEmpty()) {
                         xSets.put(ySet, xSet);
                     }
                 }
@@ -252,14 +250,14 @@ public class GEMFFile {
                     final TreeSet<Integer> yList = new TreeSet<Integer>(xSet);
                     final TreeSet<Integer> xList = new TreeSet<Integer>(ySets.get(xSet));
 
-                    GEMFRange range = new GEMFFile.GEMFRange();
+                    GEMFRange range = new GEMFRange();
                     range.zoom = zoom;
                     range.sourceIndex = sourceIndex.get(source);
                     range.xMin = xList.first();
                     range.xMax = xList.last();
 
                     for (int i = yList.first(); i < yList.last() + 1; ++i) {
-                        if (yList.contains(new Integer(i))) {
+                        if (yList.contains(i)) {
                             if (range.yMin == null) {
                                 range.yMin = i;
                             }
@@ -269,7 +267,7 @@ public class GEMFFile {
                             if (range.yMin != null) {
                                 ranges.add(range);
 
-                                range = new GEMFFile.GEMFRange();
+                                range = new GEMFRange();
                                 range.zoom = zoom;
                                 range.sourceIndex = sourceIndex.get(source);
                                 range.xMin = xList.first();
@@ -481,7 +479,7 @@ public class GEMFFile {
             baseFile.read(nameData, 0, sourceNameLength);
 
             final String sourceName = new String(nameData);
-            mSources.put(new Integer(sourceIndex), sourceName);
+            mSources.put(sourceIndex, sourceName);
         }
 
         // Read Ranges
@@ -524,7 +522,7 @@ public class GEMFFile {
      * with specified Z/X/Y coordinates will be returned.
      */
     public void selectSource(final int pSource) {
-        if (mSources.containsKey(new Integer(pSource))) {
+        if (mSources.containsKey(pSource)) {
             mSourceLimited = true;
             mCurrentSource = pSource;
         }
@@ -585,7 +583,7 @@ public class GEMFFile {
             final int numY = range.yMax + 1 - range.yMin;
             final int xIndex = pX - range.xMin;
             final int yIndex = pY - range.yMin;
-            long offset = (xIndex * numY) + yIndex;
+            long offset = ((long) xIndex * numY) + yIndex;
             offset *= (U32_SIZE + U64_SIZE);
             offset += range.offset;
 
@@ -624,7 +622,7 @@ public class GEMFFile {
             byte[] buffer = new byte[bufferSize];
 
             // we need to know how may bytes were read to write them to the byteBuffer
-            int len = 0;
+            int len;
             while (stream.available() > 0) {
                 len = stream.read(buffer);
                 if (len > 0)
@@ -661,7 +659,7 @@ public class GEMFFile {
     // ===========================================================
 
     // Class to represent a range of stored tiles within the archive.
-    private class GEMFRange {
+    private static class GEMFRange {
         Integer zoom;
         Integer xMin;
         Integer xMax;
@@ -681,7 +679,7 @@ public class GEMFFile {
     // InputStream class to hand to the tile loader system. It wants an InputStream, and it is more
     // efficient to create a new open file handle pointed to the right place, than to buffer the file
     // in memory.
-    class GEMFInputStream extends InputStream {
+    static class GEMFInputStream extends InputStream {
 
         RandomAccessFile raf;
         int remainingBytes;
@@ -710,7 +708,7 @@ public class GEMFFile {
 
         @Override
         public int read(final byte[] buffer, final int offset, final int length) throws IOException {
-            final int read = raf.read(buffer, offset, length > remainingBytes ? remainingBytes : length);
+            final int read = raf.read(buffer, offset, Math.min(length, remainingBytes));
 
             remainingBytes -= read;
             return read;

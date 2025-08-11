@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 
 group = project.property("pom.groupId")
 version =  project.property("pom.version")
-mainClassName = "org.osmdroid.mtp.OSMMapTilePackager"
+//mainClassName = "org.osmdroid.mtp.OSMMapTilePackager"
 
 test {
     testLogging {
@@ -34,6 +34,8 @@ dependencies {
 
     testImplementation "org.junit.vintage:junit-vintage-engine:${project.property('junit.version')}"
 }
+
+
 
 //copy the instrumentation tests from the maven osmdroid-android-it src folder
 task preBuildTask1(type: Copy) {
@@ -76,6 +78,35 @@ task preBuildTask4(type: Delete) {
     delete "${projectDir}/src/main/java/org/osmdroid/api/IProjection.java"
 }
 
+
+tasks.named('preBuildTask1') { //It is recommended to use tasks.named to configure existing tasks [1]
+    mustRunAfter(':osmdroid-android:copyFiles')
+}
+tasks.named('preBuildTask2') { //It is recommended to use tasks.named to configure existing tasks [1]
+    mustRunAfter(':osmdroid-android:copyFiles')
+}
+tasks.named('preBuildTask3') { //It is recommended to use tasks.named to configure existing tasks [1]
+    mustRunAfter(':osmdroid-android:copyFiles')
+}
+tasks.named('preBuildTask4') { //It is recommended to use tasks.named to configure existing tasks [1]
+    mustRunAfter(':osmdroid-android:copyFiles')
+}
+
+tasks.named("sourcesJar") {
+    dependsOn(
+            tasks.named("preBuildTask1"),
+            tasks.named("preBuildTask2"),
+            tasks.named("preBuildTask3"),
+            tasks.named("preBuildTask4")
+    )
+}
+
+afterEvaluate {
+    tasks.matching { it.name == "publishPdZipPublicationPublicationToMavenLocal" }.all {
+        dependsOn(tasks.named("distZip"))
+    }
+}
+
 compileJava.dependsOn preBuildTask1
 compileJava.dependsOn preBuildTask2
 compileJava.dependsOn preBuildTask3
@@ -115,4 +146,9 @@ afterEvaluate {
     }
 
 
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
