@@ -42,18 +42,19 @@ dependencies {
     testImplementation "org.robolectric:robolectric:${project.property('robolectric.version')}"
 }
 
-task cleanCustomFiles(type: Delete) {
+tasks.register('cleanCustomFiles', Delete) {
     delete file('src/main/java/org/osmdroid/OsmdroidBuildInfo.java')
 }
 
 
 import org.apache.tools.ant.filters.*
-task copyFiles(type: Copy) {
+
+tasks.register('copyFiles', Copy) {
     from 'src/main/filtered/org/osmdroid'
     into 'src/main/java/org/osmdroid'
     filter(ReplaceTokens, tokens: [
             "pom.version": project.property("pom.version"),
-            "date": new Date().toString()
+            "date"       : new Date().toString()
     ])
 }
 
@@ -127,7 +128,7 @@ afterEvaluate {
 }
 
 
-task androidSourcesJar(type: Jar) {
+tasks.register('androidSourcesJar', Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 

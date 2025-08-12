@@ -9,7 +9,7 @@ version = project.property("pom.version")
 
 android {
     namespace 'org.osmdroid' // Add this line
-    compileSdkVersion findProperty('android.compileSdkVersion').toInteger()
+    compileSdk findProperty('android.compileSdkVersion').toInteger()
 
 
     defaultConfig {
@@ -21,7 +21,7 @@ android {
         minSdkVersion 23
         multiDexEnabled = true
 
-        compileSdkVersion(project.hasProperty('android.compileSdkVersion')
+        compileSdk(project.hasProperty('android.compileSdkVersion')
                 ? Integer.parseInt(project.property('android.compileSdkVersion')) : 35)
 
         // default targetSdkVersion to API 23, if not provided
@@ -36,6 +36,7 @@ android {
     }
     lintOptions {
         abortOnError false
+        disable 'NonConstantResourceId'
     }
 
     testOptions {
@@ -54,7 +55,9 @@ android {
         pickFirst "META-INF/AL2.0"
         pickFirst "META-INF/LGPL2.1"
     }
-
+    buildFeatures {
+        buildConfig = true
+    }
 
 }
 

@@ -18,3 +18,13 @@ include ':osmdroid-simple-map'
 include ':OSMMapTilePackager'
 include ':osmdroid-server-jdk'
 
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    }
+}
+

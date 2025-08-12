@@ -28,8 +28,8 @@ tasks.withType(Javadoc) {
 
 dependencies {
     implementation 'org.apache.httpcomponents:httpmime:4.5.14'
-    implementation 'org.apache.james:apache-mime4j:0.8.11'
-    implementation 'org.xerial:sqlite-jdbc:3.46.0.0'
+    implementation 'org.apache.james:apache-mime4j:0.8.13'
+    implementation 'org.xerial:sqlite-jdbc:3.50.3.0'
 
 
     testImplementation "org.junit.vintage:junit-vintage-engine:${project.property('junit.version')}"
@@ -38,7 +38,7 @@ dependencies {
 
 
 //copy the instrumentation tests from the maven osmdroid-android-it src folder
-task preBuildTask1(type: Copy) {
+tasks.register('preBuildTask1', Copy) {
     println("copying StreamUtils sources")
     description 'copy java classes from osmdroid-android.'
     from("${rootDir}/osmdroid-android/src/main/java/org/osmdroid/tileprovider/util/StreamUtils.java")
@@ -46,7 +46,7 @@ task preBuildTask1(type: Copy) {
 
 }
 
-task preBuildTask2(type: Copy) {
+tasks.register('preBuildTask2', Copy) {
     println("copying GEMF sources")
     description 'copy java classes from osmdroid-android.'
     from("${rootDir}/osmdroid-android/src/main/java/org/osmdroid/util/GEMFFile.java")
@@ -55,7 +55,7 @@ task preBuildTask2(type: Copy) {
 }
 
 
-task preBuildTask3(type: Copy) {
+tasks.register('preBuildTask3', Copy) {
     println("copying api sources")
     description 'copy java classes from osmdroid-android.'
     from("${rootDir}/osmdroid-android/src/main/java/org/osmdroid/api/") {
@@ -69,7 +69,7 @@ task preBuildTask3(type: Copy) {
 }
 
 
-task preBuildTask4(type: Delete) {
+tasks.register('preBuildTask4', Delete) {
     println("removing android specific api sources")
     delete "${projectDir}/src/main/java/org/osmdroid/api/"
     delete "${projectDir}/src/main/java/org/osmdroid/api/IMyLocationOverlay.java"

@@ -42,8 +42,9 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.appcompat:appcompat:1.7.1"
     implementation project(':osmdroid-android')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22"
 }
 
 
