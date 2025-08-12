@@ -1,4 +1,4 @@
-rootProject.name = 'osmdroid-parent'
+rootProject.name = 'osmdroid-lostrat'
 
 //this is the normal settings.gradle file for osmdroid, which defines which modules are included
 //in the build process. Default is everything
@@ -24,7 +24,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         mavenLocal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 }
 

@@ -5,7 +5,7 @@ apply plugin: 'application'
 apply plugin: 'maven-publish'
 
 group = project.property("pom.groupId")
-version =  project.property("pom.version")
+version = project.property("pom.version")
 //mainClassName = "org.osmdroid.mtp.OSMMapTilePackager"
 
 test {
@@ -20,7 +20,7 @@ java {
 }
 
 tasks.withType(Javadoc) {
-    failOnError false
+    failOnError = false
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('charSet', 'UTF-8')
@@ -40,7 +40,7 @@ dependencies {
 //copy the instrumentation tests from the maven osmdroid-android-it src folder
 tasks.register('preBuildTask1', Copy) {
     println("copying StreamUtils sources")
-    description 'copy java classes from osmdroid-android.'
+    description = 'copy java classes from osmdroid-android.'
     from("${rootDir}/osmdroid-android/src/main/java/org/osmdroid/tileprovider/util/StreamUtils.java")
     into "src/main/java/org/osmdroid/tileprovider/util/"
 
@@ -48,7 +48,7 @@ tasks.register('preBuildTask1', Copy) {
 
 tasks.register('preBuildTask2', Copy) {
     println("copying GEMF sources")
-    description 'copy java classes from osmdroid-android.'
+    description = 'copy java classes from osmdroid-android.'
     from("${rootDir}/osmdroid-android/src/main/java/org/osmdroid/util/GEMFFile.java")
     into "src/main/java/org/osmdroid/util/"
 
@@ -57,7 +57,7 @@ tasks.register('preBuildTask2', Copy) {
 
 tasks.register('preBuildTask3', Copy) {
     println("copying api sources")
-    description 'copy java classes from osmdroid-android.'
+    description = 'copy java classes from osmdroid-android.'
     from("${rootDir}/osmdroid-android/src/main/java/org/osmdroid/api/") {
         exclude 'IMyLocationOverlay.java'
         exclude 'Polyline.java'
@@ -118,8 +118,8 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.java
-                groupId project.property("pom.groupId")
-                artifactId project.name
+                groupId = project.property("pom.groupId")
+                artifactId = project.name
                 version = project.property("pom.version")
                 pom {
                     description =  project.description

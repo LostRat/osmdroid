@@ -22,7 +22,7 @@ java {
 
 
 tasks.withType(Javadoc) {
-    failOnError false
+    failOnError = false
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('charSet', 'UTF-8')
@@ -95,8 +95,8 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.web
-                groupId project.property("pom.groupId")
-                artifactId project.name
+                groupId = project.property("pom.groupId")
+                artifactId = project.name
                 version = project.property("pom.version")
                 pom {
                     description =  project.description

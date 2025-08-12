@@ -8,15 +8,16 @@ version =  project.property("pom.version")
 
 
 android {
-    namespace 'org.osmdroid.library' // Add this line
-    compileSdkVersion findProperty('android.compileSdkVersion').toInteger()
+    namespace = 'org.osmdroid.library' // Add this line
+    compileSdkVersion = findProperty('android.compileSdkVersion').toInteger()
 
     defaultConfig{
-        targetSdkVersion  findProperty('android.targetSdkVersion').toInteger()
+        minSdkVersion 23
+        targetSdkVersion findProperty('android.targetSdkVersion').toInteger()
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError = false
     }
 	testOptions { 
        unitTests.returnDefaultValues = true
@@ -102,8 +103,8 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId project.property("pom.groupId")
-                artifactId project.name
+                groupId = project.property("pom.groupId")
+                artifactId = project.name
                 version = project.property("pom.version")
                 pom {
                     description =  project.description

@@ -7,15 +7,15 @@ group = project.property("pom.groupId")
 version = project.property("pom.version")
 
 android {
-    namespace 'org.osmdroid.gpkg' // Add this line
-    compileSdkVersion findProperty('android.compileSdkVersion').toInteger()
+    namespace = 'org.osmdroid.gpkg' // Add this line
+    compileSdkVersion = findProperty('android.compileSdkVersion').toInteger()
 
     defaultConfig {
         minSdkVersion 23
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
         }
     }
 
@@ -72,8 +72,8 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId project.property("pom.groupId")
-                artifactId project.name
+                groupId = project.property("pom.groupId")
+                artifactId = project.name
                 version = project.property("pom.version")
                 pom {
                     description = project.description

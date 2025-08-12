@@ -8,21 +8,21 @@ group = project.property("pom.groupId")
 version = project.property("pom.version")
 
 android {
-    namespace 'org.osmdroid' // Add this line
-    compileSdk findProperty('android.compileSdkVersion').toInteger()
+    namespace = 'org.osmdroid' // Add this line
+    compileSdk = findProperty('android.compileSdkVersion').toInteger()
 
 
     defaultConfig {
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 
-        applicationId "org.osmdroid"
+        applicationId = "org.osmdroid"
 
         minSdkVersion 23
         multiDexEnabled = true
 
-        compileSdk(project.hasProperty('android.compileSdkVersion')
-                ? Integer.parseInt(project.property('android.compileSdkVersion')) : 35)
+        compileSdk = project.hasProperty('android.compileSdkVersion')
+                ? Integer.parseInt(project.property('android.compileSdkVersion')) : 35
 
         // default targetSdkVersion to API 23, if not provided
         targetSdkVersion(project.hasProperty('android.targetSdkVersion')
@@ -35,7 +35,7 @@ android {
         versionName project.version
     }
     lintOptions {
-        abortOnError false
+        abortOnError = false
         disable 'NonConstantResourceId'
     }
 
@@ -111,7 +111,7 @@ dependencies {
 
     //on device testing
     androidTestImplementation 'androidx.multidex:multidex:2.0.1'
-    androidTestImplementation "androidx.annotation:annotation:1.9.1"
+    androidTestImplementation "androidx.annotation:annotation:1.7.1"
 
 
     androidTestImplementation "androidx.test:runner:1.7.0"
@@ -139,7 +139,7 @@ android.applicationVariants.all { variant ->
             def mypermission = 'android.permission.ACCESS_FINE_LOCATION'
             commandLine "$adb shell pm grant ${variant.applicationId} $mypermission".split(' ')
         }
-        variant.testVariant.connectedInstrumentTest.dependsOn "configDevice${variant.name.capitalize()}"
+        variant.testVariant.connectedInstrumentTestProvider.get().dependsOn "configDevice${variant.name.capitalize()}"
     }
 }
 
@@ -156,6 +156,6 @@ android.applicationVariants.all { variant ->
             def mypermission = 'android.permission.WRITE_EXTERNAL_STORAGE '
             commandLine "$adb shell pm grant ${variant.applicationId} $mypermission".split(' ')
         }
-        variant.testVariant.connectedInstrumentTest.dependsOn "configDevice2${variant.name.capitalize()}"
+        variant.testVariant.connectedInstrumentTestProvider.get().dependsOn "configDevice2${variant.name.capitalize()}"
     }
 }
