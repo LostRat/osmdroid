@@ -9,6 +9,7 @@ import android.widget.Toast;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.rendertheme.AssetsRenderTheme;
 import org.mapsforge.map.rendertheme.XmlRenderTheme;
+import org.osmdroid.api.IMapView;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.mapsforge.MapsForgeTileProvider;
 import org.osmdroid.mapsforge.MapsForgeTileSource;
@@ -18,12 +19,18 @@ import org.osmdroid.tileprovider.util.StorageUtils;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.applyDimension;
 
 /**
  * An example of using MapsForge in osmdroid
@@ -62,10 +69,88 @@ public class MapsforgeTileProviderSample extends BaseSampleFragment {
 
     }
 
+    /**
+     * Copies a file from assets to internal storage, creating subdirectories if needed.
+     * This is the most reliable way to ensure correct file permissions.
+     * @return The File object for the file in internal storage, or null on failure.
+     */
+    private File copyAssetToInternalStorage(String assetPath, String destinationPath) {
+        File destFile = new File(getContext().getFilesDir(), destinationPath);
+
+        // If file already exists, no need to copy again.
+        if (destFile.exists()) {
+            Log.d(IMapView.LOGTAG, "Map file already exists. No need to copy.");
+            return destFile;
+        }
+
+        // Ensure parent directories exist.
+        File parentDir = destFile.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                Log.e(IMapView.LOGTAG, "Failed to create directory: " + parentDir.getAbsolutePath());
+                return null;
+            }
+        }
+
+        try (InputStream inputStream = getContext().getAssets().open(assetPath);
+             FileOutputStream outputStream = new FileOutputStream(destFile)) {
+
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+            Log.d(IMapView.LOGTAG, "Successfully copied map file to " + destFile.getAbsolutePath());
+            return destFile;
+        } catch (IOException e) {
+            Log.e(IMapView.LOGTAG, "Failed to copy map file from assets", e);
+            // Clean up a partially created file if it exists
+            if (destFile.exists()) {
+                destFile.delete();
+            }
+            return null;
+        }
+    }
+
+
 
     @Override
     public void addOverlays() {
         super.addOverlays();
+
+        // you can find other files at OpenAndroMaps.com
+        // 1. Copy the map file from assets to ensure it has correct permissions.
+        // This will create the file at: /data/data/org.osmdroid/files/osmdroid/portland.map
+        File mapFile = copyAssetToInternalStorage("maps/portland.map", "osmdroid/portland.map");
+
+        // 2. Check if the file was copied successfully.
+        if (mapFile == null || !mapFile.exists()) {
+            Toast.makeText(getContext(), "Could not load map file!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 3. Now, create the tile source using the file we know is accessible.
+        File[] mapFiles = new File[] { mapFile };
+
+//        NOTES FOR TESTING -- BEGIN
+//        // This will now succeed because our app created the file.
+//        MapsForgeTileSource tileSource = MapsForgeTileSource.createFromFiles(mapFiles);
+//
+//        // Set the new tile source
+//        mMapView.setTileSource(tileSource);
+//
+//        // Optional: Center the map on the new data
+//        org.osmdroid.util.BoundingBox box = tileSource.getBoundsOsmdroid();
+//        if (box != null) {
+//            mMapView.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mMapView.zoomToBoundingBox(box, true, 50);
+//                }
+//            });
+//        }
+//        NOTES FOR TESTING -- END
+
         //first let's up our map source, mapsforge needs you to explicitly specify which map files to load
         //this bit does some basic file system scanning
         Set<File> mapfiles = findMapFiles();
@@ -120,6 +205,23 @@ public class MapsforgeTileProviderSample extends BaseSampleFragment {
 
             // with value of .5F the map tiles more closely resemble that of native MapsForge basic map
             // fromFiles.setUserScaleFactor(.5F);
+
+            // Ron Ledbury
+            // This scaleFactor math was necessary because of high DPI screens.
+            // Worked with MapsForge version 0.20.0, thus with archived OSMDroid repo.
+
+            // use some official android sample code to get some value -- any value -- to test
+            final float GESTURE_THRESHOLD_DP = 16.0f;
+            float gestureThreshold =  applyDimension(
+                    COMPLEX_UNIT_DIP,
+                    GESTURE_THRESHOLD_DP + 0.5f,
+                    getResources().getDisplayMetrics());
+            //    Log.d(TAG, "screenWidth gestureThreshold: " + gestureThreshold);
+
+            // Through trial and error. You can try different values.
+            float scaleFactor = .6F;
+            scaleFactor = scaleFactor * (34F/gestureThreshold);
+            fromFiles.setUserScaleFactor(scaleFactor);
 
             mMapView.setTileProvider(forge);
 
