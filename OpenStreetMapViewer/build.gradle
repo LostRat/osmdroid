@@ -90,7 +90,10 @@ dependencies {
     implementation project(':osmdroid-wms')
     implementation project(':osmdroid-shape')
 
-    implementation 'io.github.missioncommand:mil-sym-android-renderer:0.1.59'
+    //mil-sym-android-renderer brings in a conflicting version of androidsvg
+    implementation('io.github.missioncommand:mil-sym-android-renderer:0.2.1') {
+        exclude group: 'com.caverock', module: 'androidsvg-aar'
+    }
 
     //used for various demos for picking offline tile archives
     implementation 'com.github.angads25:filepicker:1.1.1'

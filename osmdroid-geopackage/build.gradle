@@ -30,6 +30,10 @@ android {
         excludes += "DebugProbesKt.bin"
         excludes += "com/j256/ormlite/core/LICENSE.txt"
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
 }
 
 dependencies {
@@ -39,7 +43,7 @@ dependencies {
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.13.4'
 
     api  project(':osmdroid-android')
-    api ("mil.nga.geopackage:geopackage-android:6.7.3"){
+    api ("mil.nga.geopackage:geopackage-android:6.7.4"){
         exclude group: 'com.google.android.gms', module:'play-services'
         exclude group: 'com.google.maps.android', module:'android-maps-utils'
         exclude group: 'com.android.support',module: 'support-v13'
@@ -48,7 +52,7 @@ dependencies {
         exclude group: 'com.j256.ormlite'
     }
 
-    api 'mil.nga.geopackage:geopackage-core:6.6.5'
+    api 'mil.nga.geopackage:geopackage-core:6.6.7'
     api 'ar.com.hjg:pngj:2.1.0'
     api 'mil.nga:tiff:3.0.0'
 
