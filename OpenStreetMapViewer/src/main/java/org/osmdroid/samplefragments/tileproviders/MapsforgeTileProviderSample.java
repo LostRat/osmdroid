@@ -121,7 +121,7 @@ public class MapsforgeTileProviderSample extends BaseSampleFragment {
         // you can find other files at OpenAndroMaps.com
         // 1. Copy the map file from assets to ensure it has correct permissions.
         // This will create the file at: /data/data/org.osmdroid/files/osmdroid/portland.map
-        File mapFile = copyAssetToInternalStorage("maps/portland.map", "osmdroid/portland.map");
+        File mapFile = copyAssetToInternalStorage("maps/forest-park-202502.map", "osmdroid/forest-park-202502.map");
 
         // 2. Check if the file was copied successfully.
         if (mapFile == null || !mapFile.exists()) {
@@ -230,8 +230,23 @@ public class MapsforgeTileProviderSample extends BaseSampleFragment {
             //since we have no idea what will be on the
             //user's device and what geographic area it is, this will attempt to center the map
             //on whatever the map data provides
-            mMapView.getController().setZoom(fromFiles.getMinimumZoomLevel());
-            mMapView.zoomToBoundingBox(fromFiles.getBoundsOsmdroid(), true);
+
+            // Assuming you have these methods available
+            int minZoom = fromFiles.getMinimumZoomLevel();
+            int maxZoom = fromFiles.getMaximumZoomLevel();
+
+            mMapView.setMinZoomLevel((double) minZoom);
+            mMapView.setMaxZoomLevel((double) maxZoom);
+
+// Calculate the average
+            double averageZoom = (minZoom + maxZoom) / 2.0; // Use 2.0 to ensure double division
+
+// Round up to the nearest integer
+            int roundedUpAverageZoom = (int) Math.ceil(averageZoom);
+
+// Set the zoom level
+            mMapView.getController().setZoom((double) roundedUpAverageZoom);
+            mMapView.getController().setCenter(fromFiles.getBoundsOsmdroid().getCenterWithDateLine());
         }
     }
 
