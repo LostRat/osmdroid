@@ -248,7 +248,10 @@ public class StorageUtils {
      * {@link org.osmdroid.config.IConfigurationProvider#setOsmdroidTileCache(File)}.
      *
      * @return A {@link StorageInfo} object.
+     * @deprecated Use {@link #getBestWritableStorage(Context)} instead. This method is not
+     * compatible with scoped storage and may not work as expected on API 29+.
      */
+    @Deprecated
     public static StorageInfo getBestWritableStorage() {
         return getBestWritableStorage(null);
     }
@@ -366,6 +369,7 @@ public class StorageUtils {
      * @return A {@link Map} of all storage locations available
      * @deprecated As of 6.1.7, use {@link #getStorageList()} instead.
      */
+    @Deprecated
     public static Map<String, File> getAllStorageLocations() {
         Map<String, File> map = new HashMap<>(10);
 
