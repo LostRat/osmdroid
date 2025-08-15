@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 
 import org.osmdroid.library.R;
 
+import androidx.core.content.ContextCompat;
+
 public class ItemizedOverlayControlView extends LinearLayout {
 
     // ===========================================================
@@ -47,7 +49,7 @@ public class ItemizedOverlayControlView extends LinearLayout {
 
         this.mNavToButton = new ImageButton(context);
         this.mNavToButton
-                .setImageDrawable(context.getResources().getDrawable(R.drawable.navto_small));
+                .setImageDrawable(ContextCompat.getDrawable(context, R.drawable.navto_small));
 
         this.addView(mPreviousButton, new LayoutParams(
                 android.view.ViewGroup.LayoutParams.WRAP_CONTENT,

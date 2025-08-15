@@ -17,6 +17,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.Overlay;
 
+import androidx.core.content.ContextCompat;
+
 /**
  * @author Nicolas Gramlich
  */
@@ -55,7 +57,7 @@ public class DirectedLocationOverlay extends Overlay {
     public DirectedLocationOverlay(final Context ctx) {
         super();
 
-        final BitmapDrawable d = (BitmapDrawable) ctx.getResources().getDrawable(R.drawable.twotone_navigation_black_48);
+        final BitmapDrawable d = (BitmapDrawable) ContextCompat.getDrawable(ctx, R.drawable.twotone_navigation_black_48);
 
         setDirectionArrow(d.getBitmap());
 

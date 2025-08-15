@@ -24,6 +24,8 @@ import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.IOverlayMenuProvider;
 import org.osmdroid.views.overlay.Overlay;
 
+import androidx.core.content.ContextCompat;
+
 /**
  * Note: the compass overlay causes issues on API 8 devices. See https://github.com/osmdroid/osmdroid/issues/218
  * <p>
@@ -312,7 +314,7 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider, IOr
         pMenu.add(0, MENU_COMPASS + pMenuIdOffset, Menu.NONE,
                 pMapView.getContext().getResources().getString(R.string.compass))
 
-                .setIcon(pMapView.getContext().getResources().getDrawable(R.drawable.ic_menu_compass))
+                .setIcon(ContextCompat.getDrawable(pMapView.getContext(), R.drawable.ic_menu_compass))
                 .setCheckable(true);
 
         return true;

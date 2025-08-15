@@ -11,6 +11,8 @@ import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 import java.util.HashSet;
 import java.util.Set;
 
+import androidx.core.content.ContextCompat;
+
 /**
  * Repository for a MapView
  * Designed for "singleton-like" objects that need a clean detach
@@ -82,7 +84,7 @@ public class MapViewRepository {
             if (mMapView != null) {
                 Context context = mMapView.getContext();
                 if (context != null) {
-                    mDefaultMarkerIcon = context.getResources().getDrawable(R.drawable.marker_default);
+                    mDefaultMarkerIcon = ContextCompat.getDrawable(context, R.drawable.marker_default);
                 }
             }
 

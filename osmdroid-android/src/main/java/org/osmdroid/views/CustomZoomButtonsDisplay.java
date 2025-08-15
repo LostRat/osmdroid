@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 
 import org.osmdroid.library.R;
 
+import androidx.core.content.ContextCompat;
+
 /**
  * @author Fabrice Fontaine
  * @since 6.1.0
@@ -118,7 +120,7 @@ public class CustomZoomButtonsDisplay {
 
     protected Bitmap getIcon(final boolean pInOrOut) {
         final int resourceId = pInOrOut ? R.drawable.sharp_add_black_36 : R.drawable.sharp_remove_black_36;
-        return ((BitmapDrawable) mMapView.getResources().getDrawable(resourceId)).getBitmap();
+        return ((BitmapDrawable) ContextCompat.getDrawable(mMapView.getContext(), resourceId)).getBitmap();
     }
 
     public void draw(final Canvas pCanvas, final float pAlpha01,

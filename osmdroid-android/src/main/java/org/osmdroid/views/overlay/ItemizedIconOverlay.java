@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
+import androidx.core.content.ContextCompat;
 
 import org.osmdroid.api.IMapView;
 import org.osmdroid.library.R;
@@ -40,7 +41,7 @@ public class ItemizedIconOverlay<Item extends OverlayItem> extends ItemizedOverl
             final Context pContext,
             final List<Item> pList,
             final org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener<Item> pOnItemGestureListener) {
-        this(pList, pContext.getResources().getDrawable(R.drawable.marker_default),
+        this(pList, ContextCompat.getDrawable(pContext, R.drawable.marker_default),
                 pOnItemGestureListener, pContext);
     }
 

@@ -29,6 +29,8 @@ import org.osmdroid.views.overlay.Overlay.Snappable;
 
 import java.util.LinkedList;
 
+import androidx.core.content.ContextCompat;
+
 /**
  * @author Marc Kurtz
  * @author Manuel Stahl
@@ -334,7 +336,7 @@ public class MyLocationNewOverlay extends Overlay implements IMyLocationConsumer
 				pMapView.getContext().getResources().getString(R.string.my_location)
 				)
 				.setIcon(
-						pMapView.getContext().getResources().getDrawable(R.drawable.ic_menu_mylocation)
+						ContextCompat.getDrawable(pMapView.getContext(), R.drawable.ic_menu_mylocation)
 						)
 				.setCheckable(true);
 
