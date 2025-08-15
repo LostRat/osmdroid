@@ -166,20 +166,22 @@ public class ScaleBarOverlay extends Overlay implements GeoConstants {
         } catch (final Exception ignore) {
         }
 
-        if ("motorola".equals(manufacturer) && "DROIDX".equals(android.os.Build.MODEL)) {
-
-            // If the screen is rotated, flip the x and y dpi values
-            WindowManager windowManager = (WindowManager) this.context
-                    .getSystemService(Context.WINDOW_SERVICE);
-            if (windowManager != null && windowManager.getDefaultDisplay().getRotation() > 0) {
-                this.xdpi = (float) (this.screenWidth / 3.75);
-                this.ydpi = (float) (this.screenHeight / 2.1);
-            } else {
-                this.xdpi = (float) (this.screenWidth / 2.1);
-                this.ydpi = (float) (this.screenHeight / 3.75);
-            }
-
-        } else if ("motorola".equals(manufacturer) && "Droid".equals(android.os.Build.MODEL)) {
+        //from 2011? //just comment out
+//        if ("motorola".equals(manufacturer) && "DROIDX".equals(android.os.Build.MODEL)) {
+//
+//            // If the screen is rotated, flip the x and y dpi values
+//            WindowManager windowManager = (WindowManager) this.context
+//                    .getSystemService(Context.WINDOW_SERVICE);
+//            if (windowManager != null && windowManager.getDefaultDisplay().getRotation() > 0) {
+//                this.xdpi = (float) (this.screenWidth / 3.75);
+//                this.ydpi = (float) (this.screenHeight / 2.1);
+//            } else {
+//                this.xdpi = (float) (this.screenWidth / 2.1);
+//                this.ydpi = (float) (this.screenHeight / 3.75);
+//            }
+//
+//        } else
+        if ("motorola".equals(manufacturer) && "Droid".equals(android.os.Build.MODEL)) {
             // http://www.mail-archive.com/android-developers@googlegroups.com/msg109497.html
             this.xdpi = 264;
             this.ydpi = 264;
