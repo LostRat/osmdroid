@@ -78,7 +78,7 @@ public class WeathForceActivity extends BaseActivity implements LocationListener
 
         GeoPoint startPoint = new GeoPoint(lat1, long1);
         IMapController mapController = mMapView.getController();
-        mapController.setZoom(9);
+        mapController.setZoom(9.0);
         mapController.setCenter(startPoint);
         Marker startMarker = new Marker(mMapView);
         startMarker.setPosition(startPoint);
@@ -142,7 +142,7 @@ public class WeathForceActivity extends BaseActivity implements LocationListener
         }
         compass = new InternalCompassOrientationProvider(this);
         compass.startOrientationProvider(this);
-        mMapView.getController().zoomTo(14);
+        mMapView.getController().zoomTo(14.0);
 
     }
 
