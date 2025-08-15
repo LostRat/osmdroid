@@ -12,6 +12,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -107,9 +108,13 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider, IOr
         mScale = context.getResources().getDisplayMetrics().density;
 
         mMapView = mapView;
-        final WindowManager windowManager = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        mDisplay = windowManager.getDefaultDisplay();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            mDisplay = context.getDisplay();
+        } else {
+            final WindowManager windowManager = (WindowManager) context
+                    .getSystemService(Context.WINDOW_SERVICE);
+            mDisplay = windowManager.getDefaultDisplay();
+        }
 
         createCompassFramePicture();
         if (mMode > 0)
