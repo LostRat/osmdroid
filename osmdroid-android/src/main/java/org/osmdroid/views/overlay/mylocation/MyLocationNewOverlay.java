@@ -105,8 +105,8 @@ public class MyLocationNewOverlay extends Overlay implements IMyLocationConsumer
         mPaint.setFilterBitmap(true);
 
 
-		setPersonIcon(((BitmapDrawable)mapView.getContext().getResources().getDrawable(R.drawable.person)).getBitmap());
-		setDirectionIcon(((BitmapDrawable)mapView.getContext().getResources().getDrawable(R.drawable.round_navigation_white_48)).getBitmap());
+		setPersonIcon(((BitmapDrawable) ContextCompat.getDrawable(mapView.getContext(), R.drawable.person)).getBitmap());
+        setDirectionIcon(((BitmapDrawable) ContextCompat.getDrawable(mapView.getContext(), R.drawable.round_navigation_white_48)).getBitmap());
 
 		// Calculate position of person icon's feet, scaled to screen density
 		mPersonHotspot = new PointF();

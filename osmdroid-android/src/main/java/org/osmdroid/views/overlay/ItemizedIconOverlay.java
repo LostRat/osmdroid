@@ -33,7 +33,7 @@ public class ItemizedIconOverlay<Item extends OverlayItem> extends ItemizedOverl
             final List<Item> pList,
             final org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener<Item> pOnItemGestureListener,
             final Context pContext) {
-        this(pList, pContext.getResources().getDrawable(R.drawable.marker_default), pOnItemGestureListener,
+        this(pList, ContextCompat.getDrawable(pContext, R.drawable.marker_default), pOnItemGestureListener,
                 pContext);
     }
 

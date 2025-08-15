@@ -39,13 +39,13 @@ public class ItemizedOverlayControlView extends LinearLayout {
 
         this.mPreviousButton = new ImageButton(context);
         this.mPreviousButton
-                .setImageDrawable(context.getResources().getDrawable(R.drawable.previous));
+                .setImageDrawable(ContextCompat.getDrawable(context, R.drawable.previous));
 
         this.mNextButton = new ImageButton(context);
-        this.mNextButton.setImageDrawable(context.getResources().getDrawable(R.drawable.next));
+        this.mNextButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.next));
 
         this.mCenterToButton = new ImageButton(context);
-        this.mCenterToButton.setImageDrawable(context.getResources().getDrawable(R.drawable.center));
+        this.mCenterToButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.center));
 
         this.mNavToButton = new ImageButton(context);
         this.mNavToButton
