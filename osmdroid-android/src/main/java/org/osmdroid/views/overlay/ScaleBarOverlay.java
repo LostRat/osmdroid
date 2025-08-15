@@ -171,7 +171,7 @@ public class ScaleBarOverlay extends Overlay implements GeoConstants {
             // If the screen is rotated, flip the x and y dpi values
             WindowManager windowManager = (WindowManager) this.context
                     .getSystemService(Context.WINDOW_SERVICE);
-            if (windowManager != null && windowManager.getDefaultDisplay().getOrientation() > 0) {
+            if (windowManager != null && windowManager.getDefaultDisplay().getRotation() > 0) {
                 this.xdpi = (float) (this.screenWidth / 3.75);
                 this.ydpi = (float) (this.screenHeight / 2.1);
             } else {
