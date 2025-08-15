@@ -483,7 +483,7 @@ public class TilesOverlay extends Overlay implements IOverlayMenuProvider {
                     canvas.drawLine(0, a, tileSize, a, paint);
                     canvas.drawLine(a, 0, a, tileSize, paint);
                 }
-                mLoadingTile = new BitmapDrawable(bitmap);
+                mLoadingTile = new BitmapDrawable(ctx.getResources(), bitmap);
             } catch (final OutOfMemoryError e) {
                 Log.e(IMapView.LOGTAG, "OutOfMemoryError getting loading tile");
                 System.gc();
