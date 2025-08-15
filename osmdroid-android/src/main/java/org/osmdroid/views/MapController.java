@@ -105,7 +105,7 @@ public class MapController implements IMapController, OnFirstLayoutListener {
         final double curZoomLevel = this.mMapView.getProjection().getZoomLevel();
 
         final double curLatSpan = bb.getLatitudeSpan();
-        final double curLonSpan = bb.getLongitudeSpan();
+        final double curLonSpan = bb.getLongitudeSpanWithDateLine();
 
         final double diffNeededLat = (double) latSpan / curLatSpan; // i.e. 600/500 = 1,2
         final double diffNeededLon = (double) lonSpan / curLonSpan; // i.e. 300/400 = 0,75
