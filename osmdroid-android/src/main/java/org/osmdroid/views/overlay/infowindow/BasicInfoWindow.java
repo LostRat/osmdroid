@@ -13,6 +13,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayWithIW;
 
+import static android.text.Html.fromHtml;
+
 /**
  * {@link org.osmdroid.views.overlay.infowindow.BasicInfoWindow} is the default
  * implementation of {@link org.osmdroid.views.overlay.infowindow.InfoWindow} for an
@@ -84,14 +86,14 @@ public class BasicInfoWindow extends InfoWindow {
         String snippet = overlay.getSnippet();
         if (snippet == null)
             snippet = "";
-        Spanned snippetHtml = Html.fromHtml(snippet);
+        Spanned snippetHtml = fromHtml(snippet);
         ((TextView) mView.findViewById(mDescriptionId /*R.id.description*/)).setText(snippetHtml);
 
         //handle sub-description, hidding or showing the text view:
         TextView subDescText = (TextView) mView.findViewById(mSubDescriptionId);
         String subDesc = overlay.getSubDescription();
         if (subDesc != null && !("".equals(subDesc))) {
-            subDescText.setText(Html.fromHtml(subDesc));
+            subDescText.setText(fromHtml(subDesc));
             subDescText.setVisibility(View.VISIBLE);
         } else {
             subDescText.setVisibility(View.GONE);
