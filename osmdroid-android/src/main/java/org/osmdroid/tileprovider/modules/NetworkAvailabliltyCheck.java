@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 
@@ -35,16 +36,24 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
             // if we're unable to check network state, assume we have a network
             return true;
         }
-        final NetworkInfo networkInfo = mConnectionManager.getActiveNetworkInfo();
-        if (networkInfo == null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final NetworkCapabilities networkCapabilities = mConnectionManager.getNetworkCapabilities(mConnectionManager.getActiveNetwork());
+            if (networkCapabilities == null) {
+                return false;
+            }
+            return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        } else {
+            final NetworkInfo networkInfo = mConnectionManager.getActiveNetworkInfo();
+            if (networkInfo == null) {
+                return false;
+            }
+            if (networkInfo.isConnected()) {
+                return true;
+            }
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2)
+                return mIsX86 && networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET;
             return false;
         }
-        if (networkInfo.isConnected()) {
-            return true;
-        }
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2)
-            return mIsX86 && networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET;
-        return false;
     }
 
     @Override
@@ -53,9 +62,17 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
             // if we're unable to check network state, assume we have a network
             return true;
         }
-        final NetworkInfo wifi = mConnectionManager
-                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        return wifi != null && wifi.isConnected();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final NetworkCapabilities networkCapabilities = mConnectionManager.getNetworkCapabilities(mConnectionManager.getActiveNetwork());
+            if (networkCapabilities == null) {
+                return false;
+            }
+            return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+        } else {
+            final NetworkInfo wifi = mConnectionManager
+                    .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            return wifi != null && wifi.isConnected();
+        }
     }
 
     @Override
@@ -64,9 +81,17 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
             // if we're unable to check network state, assume we have a network
             return true;
         }
-        final NetworkInfo mobile = mConnectionManager
-                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        return mobile != null && mobile.isConnected();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final NetworkCapabilities networkCapabilities = mConnectionManager.getNetworkCapabilities(mConnectionManager.getActiveNetwork());
+            if (networkCapabilities == null) {
+                return false;
+            }
+            return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
+        } else {
+            final NetworkInfo mobile = mConnectionManager
+                    .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            return mobile != null && mobile.isConnected();
+        }
     }
 
     @Deprecated
