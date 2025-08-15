@@ -105,13 +105,11 @@ public abstract class NonAcceleratedOverlay extends Overlay {
             }
 
             mBackingCanvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
-            c.getMatrix(mBackingMatrix);
+            mBackingMatrix.set(osmv.getProjection().getScaleRotateCanvasMatrix());
             mBackingCanvas.setMatrix(mBackingMatrix);
             onDraw(mBackingCanvas, c, osmv, shadow);
             c.save();
-            c.getMatrix(mCanvasIdentityMatrix);
-            mCanvasIdentityMatrix.invert(mCanvasIdentityMatrix);
-            c.concat(mCanvasIdentityMatrix);
+            c.concat(osmv.getProjection().getInvertedScaleRotateCanvasMatrix());
             c.drawBitmap(mBackingBitmap, 0, 0, null);
             c.restore();
         } else
