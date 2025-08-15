@@ -1,6 +1,7 @@
 package org.osmdroid.tileprovider.util;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 
@@ -10,7 +11,7 @@ public class SimpleInvalidationHandler extends Handler {
     private View mView;
 
     public SimpleInvalidationHandler(final View pView) {
-        super();
+        super(Looper.getMainLooper());
         mView = pView;
     }
 

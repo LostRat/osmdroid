@@ -41,7 +41,7 @@ public class DelayedMapListener implements MapListener {
     public DelayedMapListener(final MapListener wrappedListener, final long delay) {
         this.wrappedListener = wrappedListener;
         this.delay = delay;
-        this.handler = new Handler();
+        this.handler = new android.os.Handler(android.os.Looper.getMainLooper());
         this.callback = null;
     }
 

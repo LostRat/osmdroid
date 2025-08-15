@@ -1,6 +1,7 @@
 package org.osmdroid.views.drawing;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import org.osmdroid.tileprovider.MapTileProviderBase;
@@ -16,7 +17,7 @@ public class MapSnapshotHandler extends Handler {
     private MapSnapshot mMapSnapshot;
 
     public MapSnapshotHandler(final MapSnapshot pMapSnapshot) {
-        super();
+        super(Looper.getMainLooper());
         mMapSnapshot = pMapSnapshot;
     }
 
