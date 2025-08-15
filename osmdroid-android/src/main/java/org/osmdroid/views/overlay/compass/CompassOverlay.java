@@ -102,6 +102,7 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider, IOr
     }
 
 
+    @SuppressWarnings("deprecation")
     public CompassOverlay(Context context, IOrientationProvider orientationProvider,
                           MapView mapView) {
         super();

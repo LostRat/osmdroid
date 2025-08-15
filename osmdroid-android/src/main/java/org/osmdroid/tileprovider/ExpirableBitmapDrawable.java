@@ -20,6 +20,7 @@ public class ExpirableBitmapDrawable extends BitmapDrawable {
 
     private int[] mState;
 
+    @SuppressWarnings("deprecation")
     public ExpirableBitmapDrawable(final Bitmap pBitmap) {
         super(pBitmap);
         mState = new int[0];

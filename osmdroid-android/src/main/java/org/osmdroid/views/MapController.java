@@ -121,6 +121,7 @@ public class MapController implements IMapController, OnFirstLayoutListener {
     }
 
     // TODO rework zoomToSpan
+    @Deprecated
     @Override
     public void zoomToSpan(int latSpanE6, int lonSpanE6) {
         zoomToSpan(latSpanE6 * 1E-6, lonSpanE6 * 1E-6);
@@ -271,6 +272,7 @@ public class MapController implements IMapController, OnFirstLayoutListener {
         }
     }
 
+    @Deprecated
     @Override
     public int setZoom(final int zoomlevel) {
         return (int) setZoom((double) zoomlevel);
@@ -332,6 +334,7 @@ public class MapController implements IMapController, OnFirstLayoutListener {
         return zoomToFixing(mMapView.getZoomLevelDouble() - 1, xPixel, yPixel, null);
     }
 
+    @Deprecated
     @Override
     public boolean zoomTo(int zoomLevel) {
         return zoomTo(zoomLevel, null);
@@ -441,6 +444,7 @@ public class MapController implements IMapController, OnFirstLayoutListener {
         return zoomToFixing(zoomLevel, xPixel, yPixel, null);
     }
 
+    @Deprecated
     @Override
     public boolean zoomToFixing(int zoomLevel, int xPixel, int yPixel) {
         return zoomToFixing(zoomLevel, xPixel, yPixel, null);

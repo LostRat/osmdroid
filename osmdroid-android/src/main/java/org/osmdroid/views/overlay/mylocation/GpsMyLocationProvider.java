@@ -178,6 +178,7 @@ public class GpsMyLocationProvider implements IMyLocationProvider, LocationListe
     public void onProviderEnabled(final String provider) {
     }
 
+    @Deprecated
     @Override
     public void onStatusChanged(final String provider, final int status, final Bundle extras) {
     }

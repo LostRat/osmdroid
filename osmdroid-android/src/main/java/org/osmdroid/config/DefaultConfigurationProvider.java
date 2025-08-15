@@ -610,6 +610,7 @@ public class DefaultConfigurationProvider implements IConfigurationProvider {
     /**
      * @since 6.1.0
      */
+    @SuppressWarnings("deprecation")
     private String computeNormalizedUserAgent(final Context pContext) {
         if (pContext == null) {
             return null;
@@ -621,6 +622,7 @@ public class DefaultConfigurationProvider implements IConfigurationProvider {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                 version = packageInfo.getLongVersionCode();
             } else {
+                //noinspection deprecation
                 version = packageInfo.versionCode;
             }
             return packageName + "/" + version;

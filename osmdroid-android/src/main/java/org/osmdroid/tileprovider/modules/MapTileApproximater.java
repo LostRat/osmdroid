@@ -109,6 +109,7 @@ public class MapTileApproximater extends MapTileModuleProviderBase {
 
     protected class TileLoader extends MapTileModuleProviderBase.TileLoader {
 
+        @SuppressWarnings("deprecation")
         @Override
         public Drawable loadTile(final long pMapTileIndex) {
             final Bitmap bitmap = approximateTileFromLowerZoom(pMapTileIndex);

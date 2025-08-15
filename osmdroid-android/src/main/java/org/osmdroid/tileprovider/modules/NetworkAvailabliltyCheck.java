@@ -30,6 +30,7 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean getNetworkAvailable() {
         if (!mHasNetworkStatePermission) {
@@ -43,6 +44,7 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
             }
             return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
         } else {
+            @SuppressWarnings("deprecation")
             final NetworkInfo networkInfo = mConnectionManager.getActiveNetworkInfo();
             if (networkInfo == null) {
                 return false;
@@ -56,6 +58,7 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean getWiFiNetworkAvailable() {
         if (!mHasNetworkStatePermission) {
@@ -69,12 +72,14 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
             }
             return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
         } else {
+            @SuppressWarnings("deprecation")
             final NetworkInfo wifi = mConnectionManager
                     .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             return wifi != null && wifi.isConnected();
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean getCellularDataNetworkAvailable() {
         if (!mHasNetworkStatePermission) {
@@ -88,6 +93,7 @@ public class NetworkAvailabliltyCheck implements INetworkAvailablityCheck {
             }
             return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
         } else {
+            @SuppressWarnings("deprecation")
             final NetworkInfo mobile = mConnectionManager
                     .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             return mobile != null && mobile.isConnected();

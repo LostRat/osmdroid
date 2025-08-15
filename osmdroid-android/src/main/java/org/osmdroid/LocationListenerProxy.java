@@ -54,6 +54,8 @@ public class LocationListenerProxy implements LocationListener {
         }
     }
 
+    @Deprecated
+    @SuppressWarnings("deprecation")
     @Override
     public void onStatusChanged(final String arg0, final int arg1, final Bundle arg2) {
         if (mListener != null) {
