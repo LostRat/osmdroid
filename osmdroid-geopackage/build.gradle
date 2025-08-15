@@ -30,10 +30,7 @@ android {
         excludes += "DebugProbesKt.bin"
         excludes += "com/j256/ormlite/core/LICENSE.txt"
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
+    
 }
 
 dependencies {
