@@ -208,7 +208,7 @@ public class StorageUtils {
                 continue;
             }
 
-            String state = Environment.getStorageState(externalDir);
+            String state = Environment.getExternalStorageState(externalDir);
             if (Environment.MEDIA_MOUNTED.equals(state)) {
                 storageDirs.add(externalDir);
             }
