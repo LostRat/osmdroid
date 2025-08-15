@@ -1,15 +1,18 @@
 package org.osmdroid.tileprovider.cachemanager;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.osmdroid.api.IMapView;
@@ -42,6 +45,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Provides various methods for managing the local filesystem cache of osmdroid tiles: <br>
@@ -72,6 +77,9 @@ public class CacheManager {
     protected final int mMaxZoomLevel;
     protected Set<CacheManagerTask> mPendingTasks = new HashSet<>();
     protected boolean verifyCancel = true;
+
+    private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+    private final Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     public CacheManager(final MapView mapView) throws TileSourcePolicyException {
         this(mapView, mapView.getTileProvider().getTileWriter());
@@ -390,8 +398,9 @@ public class CacheManager {
     }
 
     public CacheManagerTask execute(final CacheManagerTask pTask) {
-        pTask.execute();
+        pTask.onPreExecute();
         mPendingTasks.add(pTask);
+        mExecutorService.submit(pTask);
         return pTask;
     }
 
@@ -603,17 +612,33 @@ public class CacheManager {
     public static abstract class CacheManagerDialog implements CacheManagerCallback {
 
         private final CacheManagerTask mTask;
-        private final ProgressDialog mProgressDialog;
+        private final AlertDialog mAlertDialog;
+        private final ProgressBar mProgressBar;
+        private final TextView mMessageView;
         private String handleMessage;
+
         public CacheManagerDialog(final Context pCtx, final CacheManagerTask pTask) {
             mTask = pTask;
             handleMessage = pCtx.getString(R.string.cacheManagerHandlingMessage);
-            mProgressDialog = new ProgressDialog(pCtx);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.setCancelable(true);
-            // If verifyCancel is set to true, ask for verification before canceling
+
+            LinearLayout layout = new LinearLayout(pCtx);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setPadding(10, 10, 10, 10);
+
+            mProgressBar = new ProgressBar(pCtx, null, android.R.attr.progressBarStyleHorizontal);
+            mMessageView = new TextView(pCtx);
+            mMessageView.setPadding(0, 5, 0, 0);
+
+            layout.addView(mProgressBar);
+            layout.addView(mMessageView);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(pCtx);
+            builder.setTitle(getUITitle());
+            builder.setView(layout);
+            builder.setCancelable(true);
+
             if (pTask.mManager.getVerifyCancel()) {
-                mProgressDialog.setOnCancelListener(new OnCancelListener() {
+                builder.setOnCancelListener(new OnCancelListener() {
                     @Override
                     public void onCancel(final DialogInterface cancelDialog) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(pCtx);
@@ -629,20 +654,21 @@ public class CacheManager {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                mProgressDialog.show();
+                                mAlertDialog.show();
                             }
                         });
                         builder.show();
                     }
                 });
             } else {
-                mProgressDialog.setOnCancelListener(new OnCancelListener() {
+                builder.setOnCancelListener(new OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         mTask.cancel(true);
                     }
                 });
             }
+            mAlertDialog = builder.create();
         }
 
         protected String zoomMessage(int zoomLevel, int zoomMin, int zoomMax) {
@@ -653,19 +679,18 @@ public class CacheManager {
 
         @Override
         public void updateProgress(int progress, int currentZoomLevel, int zoomMin, int zoomMax) {
-            mProgressDialog.setProgress(progress);
-            mProgressDialog.setMessage(zoomMessage(currentZoomLevel, zoomMin, zoomMax));
+            mProgressBar.setProgress(progress);
+            mMessageView.setText(zoomMessage(currentZoomLevel, zoomMin, zoomMax));
         }
 
         @Override
         public void downloadStarted() {
-            mProgressDialog.setTitle(getUITitle());
-            mProgressDialog.show();
+            mAlertDialog.show();
         }
 
         @Override
         public void setPossibleTilesInArea(int total) {
-            mProgressDialog.setMax(total);
+            mProgressBar.setMax(total);
         }
 
         @Override
@@ -679,8 +704,8 @@ public class CacheManager {
         }
 
         private void dismiss() {
-            if (mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
+            if (mAlertDialog.isShowing()) {
+                mAlertDialog.dismiss();
             }
         }
     }
@@ -692,13 +717,14 @@ public class CacheManager {
      * - on a list of tiles (potentially sorted by ascending zoom level)
      * - and with callbacks for task progression
      */
-    public static class CacheManagerTask extends AsyncTask<Object, Integer, Integer> {
+    public static class CacheManagerTask implements Runnable {
         private final CacheManager mManager;
         private final CacheManagerAction mAction;
         private final IterableWithSize<Long> mTiles;
         private final int mZoomMin;
         private final int mZoomMax;
         private final ArrayList<CacheManagerCallback> mCallbacks = new ArrayList<>();
+        private volatile boolean mCancelled = false;
 
         private CacheManagerTask(final CacheManager pManager, final CacheManagerAction pAction,
                                  final IterableWithSize<Long> pTiles,
@@ -734,8 +760,7 @@ public class CacheManager {
             }
         }
 
-        @Override
-        protected void onPreExecute() {
+        public void onPreExecute() {
             final int total = mTiles.size();
             for (final CacheManagerCallback callback : mCallbacks) {
                 try {
@@ -752,8 +777,7 @@ public class CacheManager {
             Log.w(IMapView.LOGTAG, "Error caught processing cachemanager callback, your implementation is faulty", pThrowable);
         }
 
-        @Override
-        protected void onProgressUpdate(final Integer... count) {
+        public void onProgressUpdate(final Integer... count) {
             //count[0] = tile counter, count[1] = current zoom level
             for (final CacheManagerCallback callback : mCallbacks) {
                 try {
@@ -764,13 +788,11 @@ public class CacheManager {
             }
         }
 
-        @Override
-        protected void onCancelled() {
+        public void onCancelled() {
             mManager.mPendingTasks.remove(this);
         }
 
-        @Override
-        protected void onPostExecute(final Integer specialCount) {
+        public void onPostExecute(final Integer specialCount) {
             mManager.mPendingTasks.remove(this);
             for (final CacheManagerCallback callback : mCallbacks) {
                 try {
@@ -786,15 +808,21 @@ public class CacheManager {
         }
 
         @Override
-        protected Integer doInBackground(Object... params) {
+        public void run() {
             if (!mAction.preCheck()) {
-                return 0;
+                mManager.mMainHandler.post(() -> onPostExecute(0));
+                return;
             }
 
             int tileCounter = 0;
             int errors = 0;
 
             for (final long tile : mTiles) {
+                if (isCancelled()) {
+                    int finalErrors1 = errors;
+                    mManager.mMainHandler.post(() -> onPostExecute(finalErrors1));
+                    return;
+                }
                 final int zoom = MapTileIndex.getZoom(tile);
                 if (zoom >= mZoomMin && zoom <= mZoomMax) {
                     if (mAction.tileAction(tile)) {
@@ -804,13 +832,25 @@ public class CacheManager {
                 tileCounter++;
                 if (tileCounter % mAction.getProgressModulo() == 0) {
                     if (isCancelled()) {
-                        return errors;
+                        int finalErrors2 = errors;
+                        mManager.mMainHandler.post(() -> onPostExecute(finalErrors2));
+                        return;
                     }
-                    publishProgress(tileCounter, MapTileIndex.getZoom(tile));
+                    final int finalTileCounter = tileCounter;
+                    mManager.mMainHandler.post(() -> onProgressUpdate(finalTileCounter, MapTileIndex.getZoom(tile)));
                 }
-
             }
-            return errors;
+            final int finalErrors = errors;
+            mManager.mMainHandler.post(() -> onPostExecute(finalErrors));
+        }
+
+        public void cancel(boolean mayInterruptIfRunning) {
+            mCancelled = true;
+            onCancelled();
+        }
+
+        public boolean isCancelled() {
+            return mCancelled;
         }
     }
 
