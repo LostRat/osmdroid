@@ -66,12 +66,16 @@ public class ArchiveFileFactory {
         Class<? extends IArchiveFile> aClass = extensionMap.get(extension.toLowerCase());
         if (aClass != null) {
             try {
-                IArchiveFile provider = aClass.newInstance();
+                IArchiveFile provider = aClass.getConstructor().newInstance();
                 provider.init(pFile);
                 return provider;
             } catch (InstantiationException e) {
                 Log.e(IMapView.LOGTAG, "Error initializing archive file provider " + pFile.getAbsolutePath(), e);
             } catch (IllegalAccessException e) {
+                Log.e(IMapView.LOGTAG, "Error initializing archive file provider " + pFile.getAbsolutePath(), e);
+            } catch (NoSuchMethodException e) {
+                Log.e(IMapView.LOGTAG, "Error initializing archive file provider " + pFile.getAbsolutePath(), e);
+            } catch (java.lang.reflect.InvocationTargetException e) {
                 Log.e(IMapView.LOGTAG, "Error initializing archive file provider " + pFile.getAbsolutePath(), e);
             } catch (final Exception e) {
                 Log.e(IMapView.LOGTAG, "Error opening archive file " + pFile.getAbsolutePath(), e);
