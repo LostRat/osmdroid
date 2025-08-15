@@ -16,7 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
-import android.widget.ZoomButtonsController;
+
 
 import org.metalev.multitouch.controller.MultiTouchController;
 import org.metalev.multitouch.controller.MultiTouchController.MultiTouchObjectCanvas;
@@ -890,7 +890,7 @@ public class MapView extends ViewGroup implements IMapView,
             super.postInvalidate(mInvalidateRect.left, mInvalidateRect.top, mInvalidateRect.right,
                     mInvalidateRect.bottom);
         else
-            super.invalidate(mInvalidateRect);
+            super.invalidate();
     }
 
     /**
@@ -1628,7 +1628,12 @@ public class MapView extends ViewGroup implements IMapView,
         }
     }
 
-    private class MapViewZoomListener implements CustomZoomButtonsController.OnZoomListener, ZoomButtonsController.OnZoomListener {
+    private class MapViewZoomListener implements CustomZoomButtonsController.OnZoomListener {
+        @Override
+        public void onVisibilityChanged(boolean b) {
+
+        }
+
         @Override
         public void onZoom(final boolean zoomIn) {
             if (zoomIn) {
@@ -1636,10 +1641,6 @@ public class MapView extends ViewGroup implements IMapView,
             } else {
                 getController().zoomOut();
             }
-        }
-
-        @Override
-        public void onVisibilityChanged(final boolean visible) {
         }
     }
 
