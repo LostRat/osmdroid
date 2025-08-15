@@ -69,7 +69,7 @@ public class MyLocationNewOverlay extends Overlay implements IMyLocationConsumer
      */
     protected boolean enableAutoStop = true;
     private Location mLocation;
-    private final GeoPoint mGeoPoint = new GeoPoint(0, 0); // for reuse
+    private final GeoPoint mGeoPoint = new GeoPoint(0.0, 0.0); // for reuse
     private boolean mIsLocationEnabled = false;
     protected boolean mIsFollowing = false; // follow location updates
     protected boolean mDrawAccuracyEnabled = true;
