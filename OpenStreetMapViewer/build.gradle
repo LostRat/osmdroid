@@ -95,6 +95,8 @@ dependencies {
         exclude group: 'com.caverock', module: 'androidsvg-aar'
     }
 
+    implementation 'androidx.preference:preference:1.2.1'
+
     //used for various demos for picking offline tile archives
     implementation 'com.github.angads25:filepicker:1.1.1'
 
@@ -124,7 +126,7 @@ dependencies {
     // Optional -- UI testing with UI Automator
     androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
     // Optional -- UI testing with Compose
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.8.3"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.9.0"
 }
 
 
