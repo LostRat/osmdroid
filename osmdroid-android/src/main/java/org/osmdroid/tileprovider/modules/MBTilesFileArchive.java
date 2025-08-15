@@ -86,7 +86,7 @@ public class MBTilesFileArchive implements IArchiveFile {
 
     public Set<String> getTileSources() {
         //the MBTiles spec doesn't store source information in it, so we can't return anything
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override

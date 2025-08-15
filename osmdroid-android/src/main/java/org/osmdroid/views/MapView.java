@@ -332,7 +332,7 @@ public class MapView extends ViewGroup implements IMapView,
 
     @Override
     public double getLongitudeSpanDouble() {
-        return this.getBoundingBox().getLongitudeSpan();
+        return this.getBoundingBox().getLongitudeSpanWithDateLine();
     }
 
     public BoundingBox getBoundingBox() {
