@@ -130,15 +130,13 @@ public class StorageUtils {
      */
     public static List<StorageInfo> getStorageList(Context context) {
         List<StorageInfo> storageInfos;
-        // only use this for Q and up for now, to not break behaviour on other versions
         if (android.os.Build.VERSION.SDK_INT >= 29) {
             if (context != null) {
                 storageInfos = getStorageListApi19(context);
             } else {
-                // This is fallback for the case when targetSdk of the application is < 29
-                // In this case scoped storage restrictions are not enforced, even though device
-                // is API29. Will always return an empty list when targetSdk >= API29.
-                storageInfos = getStorageListPreApi19();
+                // On API 29+, we need a context to get the app-specific directories.
+                // Without a context, we can't provide any valid storage locations.
+                storageInfos = new ArrayList<>();
             }
         }
         // use legacy behaviour but add locations from "modern" way of getting storage if context is
