@@ -71,6 +71,7 @@ public abstract class BitmapTileSourceBase implements ITileSource {
 
 
     @Override
+    @SuppressWarnings("deprecation")
     public int ordinal() {
         return mOrdinal;
     }
