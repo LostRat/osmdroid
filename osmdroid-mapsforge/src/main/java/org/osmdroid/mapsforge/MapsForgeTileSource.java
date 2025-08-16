@@ -44,6 +44,7 @@ public class MapsForgeTileSource extends BitmapTileSourceBase {
 
     // Store application context's AssetManager for loading assets-based themes
     private static AssetManager sAssetManager;
+    private static android.content.res.Resources sResources;
 
     // Default theme settings - can be overridden
     private static String sDefaultThemeDir = "renderthemes";
@@ -157,6 +158,7 @@ public class MapsForgeTileSource extends BitmapTileSourceBase {
      */
     public static void createInstance(Application app) {
         sAssetManager = app.getApplicationContext().getAssets();
+        sResources = app.getResources();
         AndroidGraphicFactory.createInstance(app);
     }
 
@@ -252,7 +254,7 @@ public class MapsForgeTileSource extends BitmapTileSourceBase {
             RendererJob mapGeneratorJob = new RendererJob(tile, mapDatabase, theme, model, scale, false, false);
             AndroidTileBitmap bmp = (AndroidTileBitmap) renderer.executeJob(mapGeneratorJob);
             if (bmp != null) {
-                return new BitmapDrawable(AndroidGraphicFactory.getBitmap(bmp));
+                return new BitmapDrawable(sResources, AndroidGraphicFactory.getBitmap(bmp));
             }
         } catch (Exception ex) {
             Log.d(IMapView.LOGTAG, "Mapsforge tile generation failed", ex);
