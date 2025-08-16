@@ -129,6 +129,15 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.9.0"
 }
 
+configurations.all {
+    resolutionStrategy {
+        force "androidx.lifecycle:lifecycle-livedata:2.6.2"
+        force "androidx.lifecycle:lifecycle-runtime:2.6.2"
+        force "androidx.lifecycle:lifecycle-viewmodel:2.6.2"
+    }
+}
+
+
 
 //the following sets the required permissions for API 23+ devices and AVDs
 
