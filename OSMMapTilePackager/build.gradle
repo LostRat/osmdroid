@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 
 group = project.property("pom.groupId")
 version = project.property("pom.version")
-//mainClassName = "org.osmdroid.mtp.OSMMapTilePackager"
+mainClassName = "org.osmdroid.mtp.OSMMapTilePackager"
 
 test {
     testLogging {
