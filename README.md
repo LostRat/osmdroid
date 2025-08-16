@@ -1,27 +1,40 @@
-**LOSTRAT fork:**
+# LostRat fork
 
 I needed an updated version for myself, for my own app.
 
-Set minimum API to 23. Compiler should automatically exclude code that is exclusively for API below 23.
-Updated gradle stuff for version 8.
-Used gemini cli to aid in updating deprecations in osmdroid-android module.
-Updated osmdroid-mapsforge module and the OpenStreetMapsViewer sample project that uses it. Both now use MapsForge version 0.25.0. Included my tiny forest park .map for testing.
+- Set minimum API to 23. Compiler should automatically exclude code that is exclusively for API below 23.
+- Updated gradle stuff for version 8.
+- Used gemini cli to aid in updating deprecations in osmdroid-android module.
+- Updated osmdroid-mapsforge module and the OpenStreetMapsViewer sample project that uses it. Both now use MapsForge version 0.25.0. Included my tiny forest park .map for testing.
+
 I can only hope that the other features survive the updates. I do not use any other modules.
+
 Will try to use JitPack to make it possible to include this as a dependency in your own app.
+
+```groovy
 implementation 'com.github.lostrat:osmdroid-android:6.1.22-lostrat'
 implementation 'com.github.lostrat:osmdroid-mapsforge:6.1.22-lostrat'
-Otherwise you can use: gradlew clean build publishToMavenLocal
-then for example:
+```
+
+Otherwise you can use: `gradlew clean build publishToMavenLocal` then for example:
+
+```groovy
 implementation("com.github.lostrat:osmdroid-android:6.1.22-lostrat-SNAPSHOT")
 implementation("com.github.lostrat:osmdroid-mapsforge:6.1.22-lostrat-SNAPSHOT")
-Or include a cloned folder inside your settings.gradle file: includeBuild 'your/clone/path'
-note: once upon a time this includeBuild method had worked for me for MapsForge
+```
+
+Or include a cloned folder inside your `settings.gradle` file: `includeBuild 'your/clone/path'`
+
+**Note:** once upon a time this `includeBuild` method had worked for me for MapsForge
+
 See the mapsforge sample for getting setting a scaling factor to get it all to look right.
 
 If a dependency is not updated at the time of this push to github it is for a reason. Identifying which ones cannot yet be updated is a challenge all by itself.
-For example:
-'androidx.core:core:1.16.0' is not set to 17 to allow compileSdk = 35 rather than requiring at least 36
 
+For example:
+`androidx.core:core:1.16.0` is not set to 17 to allow compileSdk = 35 rather than requiring at least 36
+
+---
 # osmdroid [![Build Status](https://api.travis-ci.org/osmdroid/osmdroid.svg?branch=master)](https://travis-ci.org/osmdroid/osmdroid) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.osmdroid/osmdroid-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.osmdroid/osmdroid-android) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-osmdroid-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/279) [![SourceSpy Dashboard](https://sourcespy.com/shield.svg)](https://sourcespy.com/github/osmdroidosmdroid/)
 
 osmdroid is a (almost) full/free replacement for Android's MapView (v1 API) class. It also includes a modular tile provider system with support for numerous online and offline tile sources and overlay support with built-in overlays for plotting icons, tracking location, and drawing shapes.
