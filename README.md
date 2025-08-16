@@ -9,11 +9,11 @@ I needed an updated version for myself, for my own app.
 
 I can only hope that the other features survive the updates. I do not use any other modules.
 
-Will try to use JitPack to make it possible to include this as a dependency in your own app.
+Will try to use JitPack to make it possible to include this as a dependency in your own app. (I am creating test app. The osmdroid-android import below worked for me right now, 20250816. MapView in layout is the same.)
 
 ```groovy
-implementation 'com.github.lostrat:osmdroid-android:6.1.22-lostrat'
-implementation 'com.github.lostrat:osmdroid-mapsforge:6.1.22-lostrat'
+    implementation("com.github.lostrat.osmdroid-lostrat:osmdroid-android:master-SNAPSHOT")
+    implementation("com.github.lostrat.osmdroid-lostrat:osmdroid-mapsforge:master-SNAPSHOT")
 ```
 
 Otherwise you can use: `gradlew clean build publishToMavenLocal` then for example:
